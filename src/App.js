@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Register from './Register';
-import Login from './Login';
 import Fundraiser from './Fundraiser';
 import Home from './Home';
 import PrivateRoute from './PrivateRoute';
@@ -9,9 +7,7 @@ import ResetPassword from './ResetPassword';
 import ChooseCategory from './ChooseCategory';
 import FundraisingGoal from './FundraisingGoal';
 import UserDashboard from './UserDashboard';
-import ProfilePictureUpload from './ProfilePictureUpload';
 import FundraiserDetails from './FundraiserDetails';
-import Header from './Header';
 import FundraiserUpdateForm from './UpdateFundraiser';
 import { SnackbarProvider } from 'notistack';
 import AddRole from './AddRole';
@@ -19,7 +15,6 @@ import UserList from './UserList';
 import RemoveRole from './RemoveRole';
 import Donation from './Donation';
 import ThankYou from './Thankyou';
-import SearchFundraisers from './SearchFundraisers';
 import PageNotFound from './PageNotFound';
 import SignIn from './SignIn';
 import NavbarII from './NavbarII';
@@ -29,13 +24,11 @@ import SearchDropdown from './SearchDropdown';
 import FundraiserTable from './FundraiserTable';
 import UsersTable from './UsersTable';
 import UserDetail from './UserDetail';
-// import Catagories from './Categories';
 import Details from './Details';
 import Blogs from './Blog';
 import BlogsDetails from './BlogsDetail';
 import BlogCreate from './BlogCreate';
 import Unauthorized from './Unauthorized';
-import { jwtDecode } from 'jwt-decode';
 import AdminDashboard from './AdminDashboard';
 import AboutUs from './AboutUs';
 import Settings from './Settings';
@@ -45,20 +38,6 @@ import DeleteRole from './DeleteRole';
 import BlogsTable from './BlogsTable';
 
 const App = () => {
-  const getToken = () => localStorage.getItem('user');
-  const isAuthenticated = () => !!getToken();
-  const getClaims = () => {
-    const token = localStorage.getItem('user');
-    const claims = token ? jwtDecode(token) : null;
-  
-    if (claims) {
-      console.log('Claims:', claims);
-    } else {
-      console.log('No claims found in the token.');
-    }
-  
-    return claims;
-  };
 
   return (
     <div className="bg-white border-gray-200 dark:bg-gray-900">

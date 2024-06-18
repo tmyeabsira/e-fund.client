@@ -1,8 +1,4 @@
 import { Link } from "react-router-dom";
-import NavbarII from "./NavbarII";
-import CurrencyInputForm from "./CurrencyInputForm";
-import SearchDropdown from "./SearchDropdown";
-import homepic from "./images/homepic.jpg";
 import hand from "./images/blue.png";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "./api";
@@ -76,11 +72,11 @@ const HeroSection = () => {
         <div className="flex flex-col h-full items-center justify-center px-4 py-2 mx-auto lg:gap-8 xl:gap-0 lg:py-2"></div>
         <div className="my-3 grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
           <div className="mr-auto place-self-center lg:col-span-7">
-            <h1 className="max-w-2xl mb-4 lg:text-4xl font-serif font-extrabold tracking-tight leading-none md:text-3xl xl:text-5xl dark:text-white">
+            <h1 className="max-w-2xl mb-4 text-3xl lg:text-4xl font-serif font-extrabold tracking-tight leading-none dark:text-white">
               Start a <span style={{ color: "#0a66c2" }}>Fund</span>, Change a
               Life: Your Impact Begins Here
             </h1>
-            <p className="max-w-2xl mt-3 mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+            <p className=" mt-3 mb-6 text-lg lg:mb-8">
               Welcome to our Fundraising Platform, where your initiative can
               spark real change in the world. Whether you're passionate about
               education, healthcare, environmental conservation, or community
@@ -89,12 +85,12 @@ const HeroSection = () => {
             </p>
             <Link
               to={"/create/fundraiser/category"}
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              className="mb-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Start a Fundraiser
             </Link>
           </div>
-          <div className="lg:mt-0 lg:col-span-5 lg:flex">
+          <div className="lg:mt-0 lg:col-span-5 lg:flex mt-4">
             <img
               src={hand}
               alt="mockup"
@@ -143,7 +139,7 @@ const Howitworks = () => {
       >
         <div
           ref={textRef}
-          className="max-w-5xl mx-auto  opacity-0 translate-y-10 transition-all duration-1000 ease-in-out"
+          className="max-w-5xl mx-auto px-4 opacity-0 translate-y-10 transition-all duration-1000 ease-in-out"
         >
           <h2 className="md:text-5xl text-3xl font-bold text-gray-900 mb-12">
             Fundraising on OurPlatform is easy, powerful, and trusted.

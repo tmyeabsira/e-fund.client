@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from './api';
 
 const AddRole = () => {
@@ -7,11 +7,10 @@ const AddRole = () => {
   const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRoles();
-  }, []);
+  });
 
   const fetchRoles = async () => {
     try {
