@@ -24,7 +24,7 @@ const AboutUs = () => {
         </section>
 
         <section className="flex flex-col lg:flex-row items-center justify-between w-full mb-16">
-          <img src="https://images.unsplash.com/photo-1522756890800-ac12d130a43f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWlzc2lvbnxlbnwwfHwwfHx8MA%3D%3D" alt="Our Mission" className="w-full lg:w-1/2 rounded-lg shadow-lg mb-8 lg:mb-0 lg:pr-8" />
+          <img src="https://images.unsplash.com/photo-1522756890800-ac12d130a43f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWlzc2lvbnxlbnwwfHwwfHx8MA%3D%3D" alt="Our Mission" className="w-full lg:w-1/2 rounded-lg shadow-lg mb-8 lg:mb-0 lg:mr-8" />
           <div className="lg:w-1/2">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Our Mission</h2>
             <p className="text-gray-700 dark:text-gray-400 mb-4">

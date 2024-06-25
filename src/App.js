@@ -36,6 +36,10 @@ import CreateRole from './CreateRole';
 import UpdateRole from './UpdateRole';
 import DeleteRole from './DeleteRole';
 import BlogsTable from './BlogsTable';
+import Medical from './Medical';
+import Emergencies from './Emergencies';
+import Memorials from './Memorials';
+import DonationNotification from './DonationNotifications';
 
 const App = () => {
 
@@ -48,11 +52,17 @@ const App = () => {
             <Routes>
               {/* Public Routes */}
               <Route path='/' element={<Home />} />
+              <Route path='/noti' element={<DonationNotification />} />
+
               <Route path='/about' element={<AboutUs />}/>
               <Route path='/signin' element={<SignIn />} />
               <Route path='/signup' element={<SignUp />} />
               <Route path='/forgotpassword' element={<ForgotPassword />} />
               <Route path='/resetpassword' element={<ResetPassword />} />
+              <Route path='/fundraisers/medical' element={<Medical />} />
+              <Route path='/fundraisers/emergencies' element={<Emergencies />} />
+              <Route path='/fundraisers/memorial' element={<Memorials />} />
+
               
               {/* Fundraisers */}
               <Route path='/fundraisers' element={<Fundraiser />} />
@@ -93,7 +103,7 @@ const App = () => {
               {/* Blog  */}
               <Route path='/blogs' element={<Blogs />} />
               <Route path='/blogs/:id' element={<BlogsDetails />} />
-              <Route path="/blog/create" element={<PrivateRoute roles={['superuser']}><BlogCreate /></PrivateRoute>} />
+              <Route path="/blog/create" element={<PrivateRoute roles={['admin']}><BlogCreate /></PrivateRoute>} />
 
               {/* Unauthorized */}
               <Route path='/unauthorized' element={<Unauthorized />} />

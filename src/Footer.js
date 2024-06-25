@@ -25,17 +25,17 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-2">
-                  <Link to={'/'} className="hover:underline">
+                  <Link to={'/fundraisers/medical'} className="hover:underline">
                     Medicals
                   </Link>
                 </li>
                 <li className='mb-2'>
-                  <Link to={'/'} className="hover:underline">
+                  <Link to={'/fundraisers/emergencies'} className="hover:underline">
                     Emergencies
                   </Link>
                 </li>
                 <li>
-                  <Link to={'/'} className="hover:underline">
+                  <Link to={'/fundraisers/memorial'} className="hover:underline">
                     Memorials
                   </Link>
                 </li>
@@ -78,7 +78,7 @@ const Footer = () => {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-2">
-                  <Link to={'/'} className="hover:underline">
+                  <Link to={'/blogs'} className="hover:underline">
                     Blog
                   </Link>
                 </li>

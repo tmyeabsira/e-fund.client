@@ -1,96 +1,77 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from './api';
-import LoadingSpinner from './LoadingSpinner';
-import { jwtDecode } from 'jwt-decode';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "./api";
+import LoadingSpinner from "./LoadingSpinner";
+import BlogCard from "./BlogCard";
+import { jwtDecode } from "jwt-decode";
+import BlogComment from "./BlogComment";
 
 const BlogsDetails = () => {
   const { id } = useParams();
-  const [error, setError] = useState(null);
   const [blog, setBlog] = useState(null);
-  const [blogComments, setBlogComments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [content, setContent] = useState('');
+  const [recentBlogs, setRecentBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [editingComment, setEditingComment] = useState(null);
-  const baseURL = 'https://localhost:7062';
+  const [loading, setLoading] = useState(true);
+  const [comment, setComment] = useState("");
+  const baseURL = "https://localhost:7062";
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
         const response = await axios.get(`/api/blog/GetBlog/${id}`);
-        console.log('Blog response:', response.data);
         setBlog(response.data);
       } catch (error) {
-        console.error('Error fetching blog details', error);
-      }
-    };
-
-    const fetchBlogComments = async () => {
-      try {
-        const response = await axios.get(`/api/blogcomment/GetAllBlogscomments/${id}`);
-        console.log('Comments response:', response.data.$values);
-        setBlogComments(response.data.$values);
-      } catch (err) {
-        setError(err.message);
+        console.error("Error fetching blog details", error);
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchUser = async () => {
-      const token = localStorage.getItem('user');
-      if (token) {
-        const decodedToken = jwtDecode(token);
-        const UserName = decodedToken.sub;
-        try {
-          const response = await axios.get(`/api/User/GetUserByName?UserName=${UserName}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          console.log('User response:', response.data);
-          setUser(response.data.user);
-        } catch (error) {
-          console.error('Error fetching user', error);
-        }
+    fetchBlogDetails();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchRecentBlogs = async () => {
+      try {
+        const response = await axios.get("/api/blog/GetAllBlogs");
+        setRecentBlogs(response.data.$values);
+      } catch (error) {
+        console.error("Error fetching recent blogs", error);
       }
     };
 
-    fetchBlogDetails();
-    fetchBlogComments();
-    fetchUser();
-  }, [id]);
+    fetchRecentBlogs();
+  }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      if (editingComment) {
-        await axios.put(`/api/blogcomment/UpdateBlogComment/${editingComment.id}`, { content });
-        setEditingComment(null);
+  const handleCommentChange = async(e) => {
+    e.preventDefault();
+    try{
+      const token = localStorage.getItem('user');
+        if (!token) {
+          throw new Error('No token found');
+        }
+      const decodedToken = jwtDecode(token);
+        const UserName = decodedToken.sub;
+        const userResponse = await axios.get(`/api/User/GetUserByName?UserName=${UserName}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setUser(userResponse.data.user);
+
+       
+      await axios.post(`/api/blogcomment/createblogcomment`, {BlogId: parseInt(id,10), UserId: user.id,Content:comment});
+
+    } catch(error) {
+      if (error.response) {
+        console.log(error.response.data); // Server responded with a status code outside the range of 2xx
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request); // No response was received
       } else {
-        await axios.post('/api/blogcomment/CreateBlogComment', { BlogId: id, Content: content, UserId: user.id });
+        console.log('Error', error.message); // Something else happened
       }
-      setContent('');
-      const response = await axios.get(`/api/blogcomment/GetAllBlogscomments/${id}`);
-      setBlogComments(response.data.$values);
-    } catch (error) {
-      console.error('Error submitting comment:', error);
-    }
-  };
-
-  const handleEdit = (comment) => {
-    setEditingComment(comment);
-    setContent(comment.content);
-  };
-
-  const handleDelete = async (commentId) => {
-    try {
-      await axios.delete(`/api/blogcomment/DeleteBlogComment/${commentId}`);
-      const response = await axios.get(`/api/blogcomment/GetAllBlogscomments/${id}`);
-      setBlogComments(response.data.$values);
-    } catch (error) {
-      console.error('Error deleting comment:', error);
     }
   };
 
@@ -99,35 +80,65 @@ const BlogsDetails = () => {
   }
 
   return (
-    <>
-      <main className="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900 antialiased">
-        <div className=" px-4 mx-auto max-w-screen-xl">
-          <h1 className="text-3xl text-center font-bold mb-4">{blog?.title}</h1>
-          <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
-            <div className="">
-              {blog?.pictureUrl && (
-                <img
-                  src={`${baseURL}${blog.pictureUrl}`}
-                  alt={blog.title}
-                  className="mt-4 w-full h-auto rounded-lg"
-                />
-              )}
-             <div className="text-gray-700 mb-6">
-  {blog?.content.split('\n').map((line, index) => (
-    <React.Fragment key={index}>
-      <p>{line}</p>
-      <br />
-    </React.Fragment>
-  ))}
-</div>
-
-
-            </div>
-          </article>
+    <div>
+      <div className="max-w-4xl mx-auto p-4">
+        <div className="flex items-center mb-6">
+          <img
+            className="w-16 h-16 rounded-full object-cover"
+            src={`${baseURL}${blog.user.profilePicture}`}
+            alt={blog.user.userName}
+          />
+          <div className="ml-4">
+            <p className="text-xl font-bold">{blog.user.userName}</p>
+            <p className="text-gray-500">
+              {new Date(blog.createdAt).toLocaleDateString()}
+            </p>
+          </div>
         </div>
-      </main>
-      
-    </>
+        <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
+        <div className="mb-6">
+          {blog.pictureUrl && (
+            <img
+              src={`${baseURL}${blog.pictureUrl}`}
+              alt={blog.title}
+              className="w-auto h-auto rounded-lg"
+            />
+          )}
+        </div>
+        <div className="prose max-w-none">
+          {blog?.content.split("\n").map((line, index) => (
+            <React.Fragment key={index}>
+              <p>{line}</p>
+              <br />
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+      <div>
+        <h3>Comments</h3>
+        <div className="flex ">
+          <div className="comment-form">
+            <form className="">
+              <lable>Comment</lable>
+              <input type="textarea" placeholder="Write your comment here..."
+              onChange={(e) => setComment(e.target.value)}/>
+              <button onClick={handleCommentChange} className="bg-blue-800 px-4 py-2">Comment</button>
+            </form>
+          </div>
+          <BlogComment blogId={id} />
+        </div>
+      </div>
+      <div className="w-full bg-[#639fff6e]">
+        <div className="max-w-4xl mx-auto p-4">
+          <h2 className="text-2xl font-bold mb-4">Recent Blogs</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recentBlogs.slice(0,3).map((recentBlog) => (
+              <BlogCard key={recentBlog.id} Blog={recentBlog} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
