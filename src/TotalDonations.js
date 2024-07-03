@@ -21,7 +21,7 @@ const TotalDonations = () => {
         ]);
 
         if (donationsResponse.data && typeof donationsResponse.data === "number") {
-          setTotalDonations(parseInt(donationsResponse.data) * 55);
+          setTotalDonations(parseInt(donationsResponse.data));
           
         } else {
           throw new Error("Unexpected donations response format");

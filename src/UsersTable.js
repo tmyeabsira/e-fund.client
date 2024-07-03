@@ -5,15 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const UsersTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [users, setUsers] = useState([]);
+  const [filterText, setFilterText] = useState('');
   const itemsPerPage = 10;
   const navigate = useNavigate();
 
   const totalPages = Math.ceil(users.length / itemsPerPage);
-
-  const currentItems = users.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,8 +21,24 @@ const UsersTable = () => {
       }
     };
 
-    fetchUsers(); // Call the function
+    fetchUsers();
   }, []);
+
+  const handleFilterChange = (event) => {
+    setFilterText(event.target.value);
+  };
+
+  const filteredUsers = users.filter((user) =>
+    (user.firstName || '').toLowerCase().includes(filterText.toLowerCase()) ||
+    (user.lastName || '').toLowerCase().includes(filterText.toLowerCase()) ||
+    (user.userName || '').toLowerCase().includes(filterText.toLowerCase()) ||
+    (user.email || '').toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const currentFilteredItems = filteredUsers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   function formatDateToDdMmYyyy(timestamp) {
     const date = new Date(timestamp);
@@ -39,39 +51,42 @@ const UsersTable = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <div className=''>
+        <h1 className='text-3xl font-semibold mt-16'>User Table</h1>
+        <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700 lg:mb-6" />
+        <p className='text-lg my-4'>Here you can find all users border-r. You can also filter by user's username, first name, last name and more.</p>
+      </div>
       <div className="flex justify-between items-center mb-4">
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Search users"
+          value={filterText}
+          onChange={handleFilterChange}
           className="px-4 py-2 border rounded-lg"
         />
       </div>
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow overflow-hidden">
         <thead>
           <tr>
-            <th className="px-4 py-2 border-b">First Name</th>
-            <th className="px-4 py-2 border-b">Last Name</th>
-            <th className="px-4 py-2 border-b">Username</th>
-            <th className="px-4 py-2 border-b">Email</th>
-            <th className="px-4 py-2 border-b">Created AT</th>
-            <th className="px-4 py-2 border-b"></th>
+            <th className="px-4 py-2 border-b border-r">First Name</th>
+            <th className="px-4 py-2 border-b border-r">Last Name</th>
+            <th className="px-4 py-2 border-b border-r">Username</th>
+            <th className="px-4 py-2 border-b border-r">Email</th>
+            <th className="px-4 py-2 border-b border-r">Created at</th>
           </tr>
         </thead>
         <tbody>
-          {currentItems.map((user, index) => (
+          {currentFilteredItems.map((user, index) => (
             <tr
               key={index}
               className="cursor-pointer"
               onClick={() => navigate(`/admin/user/${user.id}`)}
             >
-              <td className="px-4 py-2 border-b">{user.firstName}</td>
-              <td className="px-4 py-2 border-b">{user.lastName}</td>
-              <td className="px-4 py-2 border-b">{user.userName}</td>
-              <td className="px-4 py-2 border-b">{user.email}</td>
-              <td className="px-4 py-2 border-b">{formatDateToDdMmYyyy(user.createdAt)}</td>
-              <td className="px-4 py-2 border-b">
-                <button className="text-gray-500 hover:text-gray-700">...</button>
-              </td>
+              <td className="px-4 py-2 border-b border-r">{user.firstName}</td>
+              <td className="px-4 py-2 border-b border-r">{user.lastName}</td>
+              <td className="px-4 py-2 border-b border-r">{user.userName}</td>
+              <td className="px-4 py-2 border-b border-r">{user.email}</td>
+              <td className="px-4 py-2 border-b border-r">{formatDateToDdMmYyyy(user.createdAt)}</td>
             </tr>
           ))}
         </tbody>
@@ -79,8 +94,8 @@ const UsersTable = () => {
       <div className="flex justify-between items-center mt-4">
         <div>
           Showing {currentPage * itemsPerPage - itemsPerPage + 1}-
-          {Math.min(currentPage * itemsPerPage, users.length)} of{' '}
-          {users.length}
+          {Math.min(currentPage * itemsPerPage, filteredUsers.length)} of{' '}
+          {filteredUsers.length}
         </div>
         <div className="flex space-x-2">
           <button

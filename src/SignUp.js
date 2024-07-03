@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "./api";
+import { useSnackbar } from "notistack";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -16,6 +18,8 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [usernameValidation, setUsernameValidation] = useState({ valid: null, message: "" });
   const [emailValidation, setEmailValidation] = useState({ valid: null, message: "" });
+  const [passwordValidation, setPasswordValidation] = useState({ valid: null, message: "" });
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -73,21 +77,33 @@ const SignUp = () => {
     }
   };
 
+  const handlePasswordChange = (e)=>{
+    e.preventDefault();
+    setConfirmPassword(e.target.value)
+
+    if (formData.password === confirmPassword) {
+      setPasswordValidation({ valid: true, message: 'Passwords do match.' });
+      return;
+    }
+    else{
+      setPasswordValidation({ valid: false, message: 'Passwords do not match.' });
+      return;
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== confirmPassword) {
-      setUsernameValidation({ valid: false, message: 'Passwords do not match.' });
-      return;
-    }
+    
 
     if (usernameValidation.valid === false) {
       return;
     }
 
     try {
-      const response = await axios.post('/api/auth/register', formData);
+      await axios.post('/api/auth/register', formData);
       navigate('/signin');
+      enqueueSnackbar('Registration successful. Please sign in.', { variant: 'success' });
     } catch (error) {
       setUsernameValidation({ valid: false, message: 'Registration failed. Please try again.' });
     }
@@ -257,8 +273,15 @@ const SignUp = () => {
               placeholder="•••••••••"
               required
               value={confirmPassword}
-              onChange={(e)=>setConfirmPassword(e.target.value)}
+              onChange={handlePasswordChange}
             />
+            {passwordValidation.message && (
+                <p className={`mt-2 text-sm ${
+                  passwordValidation.valid === false ? 'text-red-600 dark:text-red-500' : passwordValidation.valid === true ? 'text-green-600 dark:text-green-500' : ''
+                }`}>
+                  <span className="font-medium">{passwordValidation.valid === false ? 'Oh, snap!' : 'Well done!'}</span> {passwordValidation.message}
+                </p>
+              )}
           </div>
           <div className="flex items-start mb-6">
             <div className="flex items-center h-5">
@@ -276,7 +299,7 @@ const SignUp = () => {
             >
               I agree with the{" "}
               <a
-                href="#"
+                href="/terms"
                 className="text-blue-600 hover:underline dark:text-blue-500"
               >
                 terms and conditions

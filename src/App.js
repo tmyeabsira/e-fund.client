@@ -40,6 +40,7 @@ import Medical from './Medical';
 import Emergencies from './Emergencies';
 import Memorials from './Memorials';
 import DonationNotification from './DonationNotifications';
+import RoleManage from './RoleManage';
 
 const App = () => {
 
@@ -88,9 +89,10 @@ const App = () => {
               <Route path="/admin/user/:id" element={<PrivateRoute roles={['superuser']}><UserDetail /></PrivateRoute>} />
               <Route path='/admin/usersTable' element={<PrivateRoute roles={['superuser']}><UsersTable /></PrivateRoute>} />  
               <Route path='/admin/blogTable' element={<PrivateRoute roles={['superuser']}><BlogsTable /></PrivateRoute>} />  
-              <Route path='/admin/roles/create' element={<PrivateRoute roles={['superuser']}><CreateRole /></PrivateRoute>} />
+              <Route path='/admin/rolemanagement' element={<PrivateRoute roles={['superuser']}><RoleManage /></PrivateRoute>} />  
+              {/* <Route path='/admin/roles/create' element={<PrivateRoute roles={['superuser']}><CreateRole /></PrivateRoute>} />
               <Route path='/admin/roles/update' element={<PrivateRoute roles={['superuser']}><UpdateRole /></PrivateRoute>} />
-              <Route path='/admin/roles/delete' element={<PrivateRoute roles={['superuser']}><DeleteRole /></PrivateRoute>} />
+              <Route path='/admin/roles/delete' element={<PrivateRoute roles={['superuser']}><DeleteRole /></PrivateRoute>} /> */}
 
 
               {/* Donations */}

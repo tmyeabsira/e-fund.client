@@ -17,12 +17,11 @@ const Donation = () => {
   });
   
   useEffect(() => {
-
     const fetchUser = async () => {
       try {
         const response = await axios.get(`/api/user/getuserbyid/${fundraiser.userId}`);
         setUser(response.data);
-        console.log(user);
+        console.log("user:",response.data);
       } catch (error) {
         console.error(error);
       }
@@ -72,21 +71,29 @@ const Donation = () => {
   };
 
   return (
-    <div className="min-h-screen  dark:bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-[700px] w-full space-y-8 px-9 py-6 bg-white dark:bg-gray-800 rounded-lg">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+    <div className="dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1200px] mx-auto w-full lg:flex item-center space-y-8 px-9 py-6 bg-white dark:bg-gray-800 rounded-lg">
+        <div className='flex-1'>
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
             Donate to {fundraiser.title}
           </h2>
           <img
             src={`${baseURL}${fundraiser.pictureUrl}`}
             alt={fundraiser.title}
-            className="mt-4 w-full h-auto rounded-lg"
+            className="mt-4 w-auto h-96 rounded-lg"
           />
+          <div className='flex items-center'>
+            {/* <img src ={`${baseURL}${user.profilePicture}`}
+            alt="s"
+            className='w-8 my-2 mr-1 rounded-full border-blue-800 border' />
+            <p className=''><span className='text-blue-800 font-bold'>{user.userName}</span> will be reciving your donation</p> */}
+          </div>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div>
+        <form className="mt-14 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
-            <div>
+            <div className='flex items-center'>
+            <div className='pr-3'>
               <label htmlFor="currency" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Currency
               </label>
@@ -102,7 +109,7 @@ const Donation = () => {
                 <option value="USD">USD</option>
               </select>
             </div>
-            <div>
+            <div className='flex-1'>
               <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Amount
               </label>
@@ -118,7 +125,9 @@ const Donation = () => {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            </div>
+            <div className='flex items-center'>
+            <div className='pr-3 flex-1'>
               <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 First Name
               </label>
@@ -133,7 +142,7 @@ const Donation = () => {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            <div className='flex-1'>
               <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Last Name
               </label>
@@ -142,11 +151,12 @@ const Donation = () => {
                 name="lastName"
                 type="text"
                 autoComplete="family-name"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-x300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Last Name (optional)"
                 value={formData.lastName}
                 onChange={handleChange}
               />
+            </div>
             </div>
             <div>
               <label htmlFor="comment" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -155,7 +165,7 @@ const Donation = () => {
               <textarea
                 id="comment"
                 name="comment"
-                rows="4"
+                rows="3"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Comment (optional)"
                 value={formData.comment}
@@ -163,15 +173,16 @@ const Donation = () => {
               />
             </div>
           </div>
-          <div>
+          <div >
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Donate Now
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );

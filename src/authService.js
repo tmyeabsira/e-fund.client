@@ -12,18 +12,25 @@ const register = (username, email, password) => {
   });
 };
 
-const login = (username, password) => {
-  return axios
-    .post(API_URL + 'login', {
+const login = async (username, password) => {
+  try {
+    const response = await axios.post(API_URL + 'login', {
       username,
       password,
-    })
-    .then((response) => {
-      if (response.data.token) {
-        localStorage.setItem('user', JSON.stringify(response.data.token));
-      }
-      return response.data;
     });
+
+    if (response.data.token) {
+      localStorage.setItem('user', JSON.stringify(response.data.token));
+    }
+
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      return "The user doesn't exist or the credentials are incorrect.";
+    } else {
+      return "An error occurred during login.";
+    }
+  }
 };
 
 const logout = () => {

@@ -10,7 +10,7 @@ const SearchDropdown = () => {
   const [fundraisers, setFundraisers] = useState([]);
   const [trendingFundraisers, setTrendingFundraisers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -24,7 +24,7 @@ const SearchDropdown = () => {
 
     const fetchTrendingFundraisers = async () => {
       try {
-        const response = await axios.get("/api/fundraiser/trending");
+        const response = await axios.get("/api/fundraiser/popular");
         setTrendingFundraisers(response.data.$values);
       } catch (error) {
         console.error("Error fetching trending fundraisers", error);

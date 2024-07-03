@@ -8,6 +8,7 @@ import { useSnackbar } from "notistack";
 import { jwtDecode } from "jwt-decode";
 import SharePopup from "./Share";
 import DeleteModal from "./DeleteModal";
+import FundraiserChart from "./charts/FundraiserChart";
 
 const FundraiserDetails = () => {
   const navigate = useNavigate();
@@ -175,6 +176,11 @@ const FundraiserDetails = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 lg:p-8 dark:bg-gray-900 min-h-screen">
+      {isCreator && (
+        <div>
+          <FundraiserChart id={id}/>
+        </div>
+      )}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 md:p-10">
         <h1 className="text-3xl font-bold mb-4 dark:text-white">
           {fundraiser.title}

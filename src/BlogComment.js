@@ -7,6 +7,7 @@ const BlogComment = ({ blogId }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const baseURL = "https://localhost:7062";
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -15,6 +16,7 @@ const BlogComment = ({ blogId }) => {
           `/api/blogcomment/GetBlogComments/${blogId}`
         );
         setComments(response.data.$values);
+        console.log(comments)
       } catch (err) {
         setError(err.message);
       } finally {
@@ -38,10 +40,17 @@ const BlogComment = ({ blogId }) => {
           {comments.map((comment) => (
             <li
               key={comment.blogCommentId}
-              className="p-4 border rounded-lg shadow-md"
+              className="p-4 border rounded-lg shadow-sm"
             >
               <div className="flex items-center mb-2">
-                <div className="font-bold">{comment.user.userName}</div>
+                <div className="flex items-center">
+                <img
+                  className="w-10 h-10 pr-2 rounded-full object-cover"
+                  src={`${baseURL}${comment.user.profilePic}`}
+                  alt={comment.user.userName}
+                />
+                  <div className="font-bold">{comment.user.userName}</div>
+                </div>
                 <div className="text-gray-500 ml-2">
                   {formatDistanceToNow(new Date(comment.createdAt), {
                     addSuffix: true,

@@ -15,51 +15,57 @@ const ThankYou = () => {
     const storedData = JSON.parse(localStorage.getItem('formData'));
     if (storedData) {
       setStoredFormData(storedData);
+
     }
   }, []);
 
-
   useEffect(() => {
     const verifyAndCreateDonation = async () => {
-        console.log(storedFormData)
-        if (storedFormData) {
-            try {
-                await axios.post('/api/donation/createdonation', {
-                fundraiserId: storedFormData.fundraiser.id,
-                amount: storedFormData.amount,
-                firstName: storedFormData.firstName,
-                lastName: storedFormData.lastName,
-                comment: storedFormData.comment,
-                });
-                localStorage.removeItem('formData')
-            } catch (error) {
-                console.error('Error creating donation', error);
-                }
-            }
-        
-      };
+      if (storedFormData) {
+        try {
+          await axios.post('/api/donation/createdonation', {
+            fundraiserId: storedFormData.fundraiser.id,
+            amount: storedFormData.amount,
+            firstName: storedFormData.firstName,
+            lastName: storedFormData.lastName,
+            comment: storedFormData.comment,
+            currency: storedFormData.currency,
+          });
+        } catch (error) {
+          console.error('Error creating donation', error);
+        }
+      }
+    };
 
     const fetchRelatedFundraisers = async () => {
-      try {
-        const response = await axios.get(`/api/fundraiser/GetFundraiserByCategory/${storedFormData.fundraiser.categoryId}`);
-        setRelatedFundraisers(response.data.$values);
-      } catch (error) {
-        console.error('Error fetching related fundraisers', error);
+      if (storedFormData) {
+        try {
+          const response = await axios.get(`/api/fundraiser/GetFundraiserByCategory/${storedFormData.fundraiser.categoryId}`);
+          setRelatedFundraisers(response.data.$values);
+        } catch (error) {
+          console.error('Error fetching related fundraisers', error);
+        }
       }
     };
+
     const fetchUser = async () => {
-      try {
-        const response = await axios.get(`/api/user/getuserbyid/${storedFormData.fundraiser.userId}`);
-        setUser(response.data);
-      } catch (error) {
-        console.error(error);
+      if (storedFormData) {
+        try {
+          const response = await axios.get(`/api/user/getuserbyid/${storedFormData.fundraiser.userId}`);
+          setUser(response.data);
+          localStorage.removeItem('formData');
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
-    
-    verifyAndCreateDonation();
-    fetchRelatedFundraisers();
-    fetchUser();
-  }, [storedFormData, user]);
+
+    if (storedFormData) {
+      verifyAndCreateDonation();
+      fetchRelatedFundraisers();
+      fetchUser();
+    }
+  }, [storedFormData]);
 
   return (
     <div className="max-w-7xl mx-auto p-4 lg:p-8 min-h-screen">

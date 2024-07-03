@@ -7,6 +7,7 @@ const FundraiserTable = () => {
   const [fundraisers, setFundraisers] = useState([]);
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [filterText, setFilterText] = useState('');
   const itemsPerPage = 10;
   const navigate = useNavigate();
 
@@ -49,39 +50,63 @@ const FundraiserTable = () => {
     navigate(`/fundraisers/${id}`);
   };
 
+  const handleFilterChange = (event) => {
+    setFilterText(event.target.value);
+  };
+
+  const filteredFundraisers = fundraisers.filter((fundraiser) =>
+    (fundraiser.title || '').toLowerCase().includes(filterText.toLowerCase()) ||
+    getUsernameById(fundraiser.userId).toLowerCase().includes(filterText.toLowerCase()) ||
+    getCategoryNameById(fundraiser.categoryId).toLowerCase().includes(filterText.toLowerCase()) ||
+    (fundraiser.description || '').toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  const currentFilteredItems = filteredFundraisers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="container mx-auto p-4">
+      <div className=''>
+        <h1 className='text-3xl font-semibold mt-16'>Fundraiser Table</h1>
+        <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700 lg:mb-6" />
+        <p className='text-lg my-4'>Here you can find all fundraisers. You can also filter by fundraiser title, owner, category and more.</p>
+      </div>
+
       <div className="flex justify-between items-center mb-4">
         <input
           type="text"
-          placeholder="Search"
+          placeholder="Filter fundraisers"
+          value={filterText}
+          onChange={handleFilterChange}
           className="px-4 py-2 border rounded-lg"
         />
       </div>
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow overflow-hidden">
         <thead>
           <tr>
-            <th className="px-4 py-2 border-b">Title</th>
-            <th className="px-4 py-2 border-b">Owner</th>
-            <th className="px-4 py-2 border-b">Category</th>
-            <th className="px-4 py-2 border-b">Description</th>
-            <th className="px-4 py-2 border-b">Goal</th>
-            <th className="px-4 py-2 border-b"></th>
+            <th className="px-4 py-2 border-b border-r">Title</th>
+            <th className="px-4 py-2 border-b border-r">Owner</th>
+            <th className="px-4 py-2 border-b border-r">Category</th>
+            <th className="px-4 py-2 border-b border-r">Description</th>
+            <th className="px-4 py-2 border-b border-r">Goal</th>
           </tr>
         </thead>
         <tbody>
-          {currentItems.map((fundraiser, index) => (
-            <tr key={index}
-            className="cursor-pointer"
-            onClick={() => handleRowClick(fundraiser.id)}>
-              <td className="px-4 py-2 border-b">{fundraiser.title}</td>
-              <td className="px-4 py-2 border-b">{getUsernameById(fundraiser.userId)}</td>
-              <td className="px-4 py-2 border-b">{getCategoryNameById(fundraiser.categoryId)}</td>
-              <td className="px-4 py-2 border-b">{fundraiser.description.substring(0, 30) + '...'}</td>
-              <td className="px-4 py-2 border-b">${fundraiser.goalAmount}</td>
-              <td className="px-4 py-2 border-b">
-                <button className="text-gray-500 hover:text-gray-700">...</button>
+          {currentFilteredItems.map((fundraiser, index) => (
+            <tr
+              key={index}
+              className="cursor-pointer"
+              onClick={() => handleRowClick(fundraiser.id)}
+            >
+              <td className="px-4 py-2 border-b border-r">{fundraiser.title}</td>
+              <td className="px-4 py-2 border-b border-r">{getUsernameById(fundraiser.userId)}</td>
+              <td className="px-4 py-2 border-b border-r">{getCategoryNameById(fundraiser.categoryId)}</td>
+              <td className="px-4 py-2 border-b border-r">
+                {fundraiser.description.substring(0, 30) + '...'}
               </td>
+              <td className="px-4 py-2 border-b border-r">${fundraiser.goalAmount}</td>
             </tr>
           ))}
         </tbody>
@@ -89,8 +114,8 @@ const FundraiserTable = () => {
       <div className="flex justify-between items-center mt-4">
         <div>
           Showing {currentPage * itemsPerPage - itemsPerPage + 1}-
-          {Math.min(currentPage * itemsPerPage, fundraisers.length)} of{' '}
-          {fundraisers.length}
+          {Math.min(currentPage * itemsPerPage, filteredFundraisers.length)} of{' '}
+          {filteredFundraisers.length}
         </div>
         <div className="flex space-x-2">
           <button

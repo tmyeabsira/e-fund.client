@@ -21,7 +21,7 @@ const UpdateRole = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+    <div className="bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
       <form className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Update Role</h2>
         <div className="mb-4">

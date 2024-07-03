@@ -6,6 +6,8 @@ import FundraiserCard from "./FundraiserCard";
 import myImage from "./images/together.webp";
 import TotalDonations from "./TotalDonations";
 
+import { Tab } from '@headlessui/react';
+
 const Home = () => {
   return (
     <div>
@@ -161,14 +163,69 @@ const Howitworks = () => {
   );
 };
 
+// const FundraisersSection = () => {
+//   const [fundraisers, setFundraisers] = useState([]);
+
+//   useEffect(() => {
+//     const fetchFundraisers = async () => {
+//       try {
+//         const response = await axios.get("/api/Fundraiser/GetAllFundraisers");
+//         setFundraisers(response.data.$values);
+//       } catch (error) {
+//         console.error("Error fetching fundraisers", error);
+//       }
+//     };
+
+//     fetchFundraisers();
+//   }, []);
+
+//   return (
+//     <section id="target-section" className="bg-white py-8 sm:py-16">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-8">
+//           Discover fundraisers inspired by what you care about
+//         </h2>
+//         <div className="flex justify-between items-center mb-4 sm:mb-8">
+//           <div>
+//             <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full">
+//               Happening worldwide
+//             </button>
+//           </div>
+//           <div className="flex space-x-2">
+//             <button className="p-2 bg-gray-200 text-gray-700 rounded-full">
+//               ←
+//             </button>
+//             <button className="p-2 bg-gray-200 text-gray-700 rounded-full">
+//               →
+//             </button>
+//           </div>
+//         </div>
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+//           {fundraisers.map((fundraiser) => (
+//             <FundraiserCard key={fundraiser.id} fundraiser={fundraiser} />
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+
 const FundraisersSection = () => {
-  const [fundraisers, setFundraisers] = useState([]);
+  const [popularFundraisers, setPopularFundraisers] = useState([]);
+  const [trendingFundraisers, setTrendingFundraisers] = useState([]);
+  const [recentFundraisers, setRecentFundraisers] = useState([]);
 
   useEffect(() => {
     const fetchFundraisers = async () => {
       try {
-        const response = await axios.get("/api/Fundraiser/GetAllFundraisers");
-        setFundraisers(response.data.$values);
+        const recentResponse = await axios.get("/api/Fundraiser/recent");
+        const popularResponse = await axios.get("/api/fundraiser/popular");
+        const trendingResponse = await axios.get("/api/fundraiser/Trending");
+        // Assuming the API response has the data separated by category
+        setPopularFundraisers(popularResponse.data.$values);
+        setTrendingFundraisers(trendingResponse.data.$values);
+        setRecentFundraisers(recentResponse.data.$values);
       } catch (error) {
         console.error("Error fetching fundraisers", error);
       }
@@ -183,29 +240,58 @@ const FundraisersSection = () => {
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-8">
           Discover fundraisers inspired by what you care about
         </h2>
-        <div className="flex justify-between items-center mb-4 sm:mb-8">
-          <div>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full">
-              Happening worldwide
-            </button>
-          </div>
-          <div className="flex space-x-2">
-            <button className="p-2 bg-gray-200 text-gray-700 rounded-full">
-              ←
-            </button>
-            <button className="p-2 bg-gray-200 text-gray-700 rounded-full">
-              →
-            </button>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {fundraisers.map((fundraiser) => (
-            <FundraiserCard key={fundraiser.id} fundraiser={fundraiser} />
-          ))}
-        </div>
+        <Tab.Group>
+          <Tab.List className="max-w-xs flex p-1 space-x-1 bg-gray-200 rounded-xl">
+            <Tab
+              className={({ selected }) =>
+                selected
+                  ? 'w-full py-2.5 text-sm leading-5 font-bold text-blue-700 bg-white rounded-lg'
+                  : 'w-full py-2.5 text-sm leading-5 font-bold text-gray-700 hover:bg-gray-400 hover:text-gray-900 rounded-lg'
+              }
+            >
+              Popular
+            </Tab>
+            <Tab
+              className={({ selected }) =>
+                selected
+                  ? 'w-full py-2.5 text-sm leading-5 font-bold text-blue-700 bg-white rounded-lg'
+                  : 'w-full py-2.5 text-sm leading-5 font-bold text-gray-700 hover:bg-gray-400 hover:text-gray-900 rounded-lg'
+              }
+            >
+              Trending
+            </Tab>
+            <Tab
+              className={({ selected }) =>
+                selected
+                  ? 'w-full py-2.5 text-sm leading-5 font-bold text-blue-700 bg-white rounded-lg'
+                  : 'w-full py-2.5 text-sm leading-5 font-bold text-gray-700 hover:bg-gray-400 hover:text-gray-900 rounded-lg'
+              }
+            >
+              Recent
+            </Tab>
+          </Tab.List>
+          <Tab.Panels className="mt-2">
+            <Tab.Panel className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {popularFundraisers.slice(0,6).map((fundraiser) => (
+                <FundraiserCard key={fundraiser.id} fundraiser={fundraiser} />
+              ))}
+            </Tab.Panel>
+            <Tab.Panel className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {trendingFundraisers.slice(0,6).map((fundraiser) => (
+                <FundraiserCard key={fundraiser.id} fundraiser={fundraiser} />
+              ))}
+            </Tab.Panel>
+            <Tab.Panel className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {recentFundraisers.slice(0,6).map((fundraiser) => (
+                <FundraiserCard key={fundraiser.id} fundraiser={fundraiser} />
+              ))}
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
       </div>
     </section>
   );
 };
+
 
 export default Home;
