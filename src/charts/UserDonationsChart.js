@@ -94,7 +94,7 @@ const UserDonationsChart = () => {
           onChange={(e) => setAggregationPeriod(e.target.value)}
           style={{ marginLeft: 8 }}
         >
-          <option value="daily">12hrs</option>
+          <option value="daily">24hrs</option>
           <option value="weekly">7days</option>
           <option value="monthly">30days</option>
           <option value="yearly">365days</option>

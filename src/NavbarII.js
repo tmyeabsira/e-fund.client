@@ -25,7 +25,6 @@ const NavbarII = () => {
     try {
       const response = await axios.get(`${baseURL}/api/user/GetUserByName?userName=${username}`);
       setUserData(response.data.user);
-      console.log(userData)
     } catch (error) {
       console.error('Error fetching user data', error);
     }
@@ -67,21 +66,27 @@ const NavbarII = () => {
                     <span className="block text-sm dark:text-white">{userData.userName}</span>
                     <span className="block text-sm text-gray-600 truncate dark:text-gray-400">{userData.email}</span>
                   </div>
-                  <ul className="py-2">
+                  <ul className="pt-2">
                     <li>
                     {hasRole('admin') || hasRole('superuser') ? (
                       <Link to="/admin" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                      <button onClick={toggleMenu}>
                         Admin Dashboard
+                      </button>
                       </Link>
                     ) : (
                       <Link to="/dashboard" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                      <button onClick={toggleMenu}>
                         Dashboard
+                      </button>
                       </Link>
                     )}
                     </li>
                     <li>
                       <Link to="/profile/account" className="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                      <button onClick={toggleMenu}>
                         Account
+                      </button>
                       </Link>
                     </li>
                     <li className="block px-4 py-2 text-sm text-red-700 hover:bg-red-100 dark:hover:bg-red-600 dark:text-red-200 dark:hover:text-white">
@@ -116,8 +121,8 @@ const NavbarII = () => {
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             
             <li>
-              <Link to="/about" className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                About
+              <Link to="/fundraisers/search" className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                Search
               </Link>
             </li>
             <li>
@@ -131,8 +136,8 @@ const NavbarII = () => {
               </Link>
             </li>
             <li>
-              <Link to="/fundraisers/search" className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                Search
+              <Link to="/about" className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                About
               </Link>
             </li>
           </ul>

@@ -44,15 +44,16 @@ const ChooseCategory = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#5DB7DE] dark:bg-gray-900 flex flex-col items-center justify-center py-12">
-      <div className="relative w-full h-96 mb-12">
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white bg-[#07020D]">
+
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col items-center">
+      <div className="relative w-full h-80 mb-12">
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white bg-blue-800">
           <h1 className="text-4xl font-semibold mb-2">Let's Begin Your Fundraising Journey</h1>
           <p className="text-lg">We're here to guide you every step of the way.</p>
         </div>
       </div>
 
-      <div className="w-full max-w-4xl bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+      <div className="w-full max-w-4xl bg-gray-50 dark:bg-gray-800 p-8 rounded-lg shadow-lg">
         <form onSubmit={handleSubmit}>
           
 

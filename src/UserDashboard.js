@@ -37,13 +37,14 @@ const UserDashboard = () => {
               
               const userResponse = await axios.get(`/api/user/getuserbyname?UserName=${username}`)
               setUserId(userResponse.data.user.id)
-              console.log("userId",userId)
+            //   console.log("userId: ",userId)
 
               // Placeholder for future API calls to get donation and money raised data
               const donationsResponse = await axios.get(`/api/Donation/GetTotalDonorsByUser/${userId}`);
               const moneyRaisedResponse = await axios.get(`api/Donation/GetTotalDonationsByUser/${userId}`);
 
               setFundraisers(fundraisersResponse.data.$values);
+              console.log("funderaiser",fundraisers)
               setTotalDonations(donationsResponse.data);
               setTotalMoneyRaised(moneyRaisedResponse.data);
           } catch (error) {
@@ -54,7 +55,7 @@ const UserDashboard = () => {
       };
 
       fetchData();
-  }, []);
+  }, [userId]);
 
   const handleNewMessage = (message) => {
       enqueueSnackbar(message, { variant: 'info' });
@@ -94,7 +95,7 @@ const UserDashboard = () => {
                   ))}
               </div>
           </div>
-          <FundraiserNotifications username={username} onNewMessage={handleNewMessage} />
+          {/* <FundraiserNotifications username={username} onNewMessage={handleNewMessage} /> */}
       </div>
   );
 };

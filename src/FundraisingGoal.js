@@ -27,11 +27,11 @@ const FundraisingGoal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 dark:bg-gray-900 flex flex-col items-center">
-      <div className="relative w-full h-80 mb-12">
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white bg-gray-700">
-          <h1 className="text-4xl font-semibold mb-2">How much would you like to raise?</h1>
-          <p className="text-lg">You can always change your goal as you go.</p>
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col items-center">
+      <div className="relative w-full h-80">
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white bg-blue-800">
+          <h1 className="text-4xl font-semibold mb-2">How much money would you like to raise?</h1>
+          <p className="text-lg">You can always change your goal later.</p>
         </div>
       </div>
 
@@ -39,19 +39,19 @@ const FundraisingGoal = () => {
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Your starting goal</h2>
           <div className="mb-4">
-            <label htmlFor="goal" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label htmlFor="goal" className="block text-sm font-medium text-gray-700 dark:text-gray-300 pb-2">
               Enter your goal amount
             </label>
             <CurrencyInputForm setGoalAmount={setGoalAmount} />
             {error && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>}
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Keep in mind that transaction <Link to='/howitworks' className="text-blue-500 dark:text-blue-400">fees</Link>, including credit and debit charges, are deducted from each donation.
+            Keep in mind that transaction <Link to='https://www.chapa.com' className="text-blue-500 dark:text-blue-400">fees</Link>, including credit and debit charges, are deducted from each donation.
           </p>
           <div className="mt-6 bg-blue-50 dark:bg-gray-800 p-4 rounded-md">
             <p className="text-sm text-gray-800 dark:text-gray-300">To receive money raised, please make sure the person withdrawing has:</p>
             <ul className="mt-2 text-sm text-gray-600 dark:text-gray-400 list-disc list-inside">
-              <li>A chappa account</li>
+              <li>A <Link to='https://www.chapa.com' className="text-blue-500 dark:text-blue-400">chapa</Link> account</li>
               <li>A bank account and a valid bank name</li>
             </ul>
           </div>

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import axios from './api';
 import React, { useState, useEffect } from 'react';
+import DeleteModal from './DeleteModal';
 
 const BlogsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -9,6 +10,8 @@ const BlogsTable = () => {
   const [filterText, setFilterText] = useState('');
   const itemsPerPage = 10;
   const navigate = useNavigate();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
 
   const totalPages = Math.ceil(blogs.length / itemsPerPage);
 
@@ -39,7 +42,8 @@ const BlogsTable = () => {
   };
 
   const handleDelete = (id) => {
-    // Implement delete functionality
+    axios.delete(`/api/Blog/DeleteBlog/${id}`);
+    // setIsDeleteModalOpen(false);
   };
 
   const handleRowClick = (id) => {
@@ -49,6 +53,14 @@ const BlogsTable = () => {
   const handleFilterChange = (event) => {
     setFilterText(event.target.value);
   };
+
+  // const handleOpenDeleteModal = () => {
+  //   setIsDeleteModalOpen(true);
+  // };
+
+  // const handleCloseDeleteModal = () => {
+  //   setIsDeleteModalOpen(false);
+  // };
 
   const filteredBlogs = blogs.filter((blog) =>
     (blog.title || '').toLowerCase().includes(filterText.toLowerCase()) ||
@@ -82,7 +94,7 @@ const BlogsTable = () => {
           <tr>
             <th className="px-4 py-2 border-b border-r">Title</th>
             <th className="px-4 py-2 border-b border-r">Owner</th>
-            <th className="px-4 py-2 border-b border-r">Description</th>
+            <th className="px-4 py-2 border-b border-r">Content</th>
             <th className="px-4 py-2 border-b border-r">Action</th>
           </tr>
         </thead>
@@ -90,8 +102,8 @@ const BlogsTable = () => {
           {currentFilteredItems.map((blog, index) => (
             <tr key={index}
                 className="cursor-pointer"
-                onClick={() => handleRowClick(blog.blogId)}>
-              <td className="px-4 py-2 border-b border-r">{blog.title}</td>
+                >
+              <td onClick={() => handleRowClick(blog.blogId)} className="px-4 py-2 border-b border-r">{blog.title}</td>
               <td className="px-4 py-2 border-b border-r">{getUsernameById(blog.userId)}</td>
               <td className="px-4 py-2 border-b border-r">{blog.content.substring(0, 30) + '...'}</td>
               <td className="px-4 py-2 border-b border-r">
@@ -149,6 +161,11 @@ const BlogsTable = () => {
           </button>
         </div>
       </div>
+      {/* <DeleteModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleDelete}
+        /> */}
     </div>
   );
 };

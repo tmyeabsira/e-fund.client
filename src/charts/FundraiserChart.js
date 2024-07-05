@@ -57,16 +57,16 @@ const FundraiserChart = ({ id }) => {
 
   return (
     <div>
-      <h2>Fundraiser Analysis </h2>
+      <h2 className='text-3xl font-semibold py-4'>Fundraiser Analysis </h2>
       <div>
-        <label htmlFor="timeUnitSelect">Select Time Unit:</label>
+        <label htmlFor="timeUnitSelect" className='text-lg '>Select Time Unit:</label>
         <select
           id="timeUnitSelect"
           value={aggregationPeriod}
           onChange={(e) => setAggregationPeriod(e.target.value)}
           style={{ marginLeft: 8 }}
         >
-          <option value="daily">12hrs</option>
+          <option value="daily">24hrs</option>
           <option value="weekly">7days</option>
           <option value="monthly">30days</option>
           <option value="yearly">365days</option>
@@ -94,3 +94,10 @@ const FundraiserChart = ({ id }) => {
 };
 
 export default FundraiserChart;
+
+
+
+// comment and fundraiser date
+// drag and drop for fundraiser page
+// fundraiser page detail
+// 

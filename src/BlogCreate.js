@@ -126,7 +126,7 @@ const BlogCreate = () => {
                     <p className="text-gray-700 text-lg">
                       {isDragActive
                         ? "Drop the file here ..."
-                        : "Drag 'n' drop a file here, or click to select a file"}
+                        : "Drag and drop a file here, or click to select a file"}
                     </p>
                     <em className="text-gray-500">
                       Only image files are allowed

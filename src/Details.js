@@ -58,10 +58,11 @@ const Details = () => {
   };
 
   return (
-    <section className="bg-blue-50 dark:bg-gray-900">
+    <section className="bg-white dark:bg-gray-900">
+      
       <div className="">
       <div className="relative w-full h-80 mb-2">
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white bg-gray-700">
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white bg-blue-800">
           <h1 className="text-4xl font-semibold mb-2">You are almost there!</h1>
           <p className="text-lg">Fill out the details of your fundraiser.</p>
         </div>
