@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ProfilePictureUpload from "./ProfilePictureUpload";
 import axios from "./api";
 import { useSnackbar } from "notistack";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const Settings = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -13,36 +12,36 @@ const Settings = () => {
   const [publicApi, setPublicApi] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
   const [error, setError] = useState("");
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [preview, setPreview] = useState(null);
 
   useEffect(() => {
-    // Fetch user details
-    
-    const fetchUser = async ()=>{
-        const token = localStorage.getItem('user');
-          if (!token) {
-            throw new Error('No token found');
-          }
-        const decodedToken = jwtDecode(token);
-            const UserName = decodedToken.sub;
-            const userResponse = await axios.get(`/api/User/GetUserByName?UserName=${UserName}`, {
-              headers: {
-                'Authorization': `Bearer ${token}`
-              }
-            });
-            setUser(userResponse.data.user)
-            console.log(userResponse.data.user)
-            setFirstName(user.firstName);
-            setLastName(user.lastName);
-            setPublicApi(user.publicApi);
-            setPreview(`https://localhost:7062${user.ProfilePicture}`);
+    const fetchUser = async () => {
+      const token = localStorage.getItem("user");
+      if (!token) {
+        throw new Error("No token found");
       }
-  
-      fetchUser()
-  }, []);
+      const decodedToken = jwtDecode(token);
+      const UserName = decodedToken.sub;
+      const userResponse = await axios.get(
+        `/api/User/GetUserByName?UserName=${UserName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUser(userResponse.data.user);
+      setFirstName(userResponse.data.user.firstName);
+      setLastName(userResponse.data.user.lastName);
+      setPublicApi(userResponse.data.user.publicApi);
+      setPreview(
+        `https://localhost:7062${userResponse.data.user.profilePicture}`
+      );
+    };
 
-  
+    fetchUser();
+  }, []);
 
   const handleSaveChanges = async () => {
     try {
@@ -54,13 +53,17 @@ const Settings = () => {
         formData.append("ProfilePicture", profilePicture);
       }
 
-      const response = await axios.put(`/api/user/update/${user.id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.put(
+        `/api/user/update/${user.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      enqueueSnackbar("Settings updated successfully", { variant: "success" });
+      enqueueSnackbar("Account updated successfully", { variant: "success" });
     } catch (error) {
       console.error("Error updating settings", error);
       enqueueSnackbar("Error updating settings", { variant: "error" });
@@ -72,43 +75,6 @@ const Settings = () => {
     setProfilePicture(file);
     setPreview(URL.createObjectURL(file));
   };
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-
-//     if (!profilePicture) {
-//       setMessage('Please select a profile picture.');
-//       return;
-//     }
-
-//     const token = localStorage.getItem('user');
-//     if (!token) {
-//       setMessage('No token found');
-//       return;
-//     }
-
-//     const decodedToken = jwtDecode(token);
-//     const userName = decodedToken.sub; 
-
-//     const formData = new FormData();
-//     formData.append('profilePicture', profilePicture);
-//     formData.append('userName', userName);
-
-//     try {
-//       const response = await axios.post('https://localhost:7062/api/user/UploadProfilePicture', formData, {
-//         headers: {
-//           'Authorization': `Bearer ${token}`,
-//           'Content-Type': 'multipart/form-data'
-//         }
-//       });
-
-//       setMessage('Profile picture uploaded successfully.');
-//       setPreview(`https://localhost:7062${response.data.ProfilePicture}`);
-//     } catch (error) {
-//       console.error('Error uploading profile picture:', error);
-//       setMessage('Failed to upload profile picture.');
-//     }
-//   };
 
   return (
     <div className="bg-white dark:bg-gray-900 min-h-screen">
@@ -128,9 +94,7 @@ const Settings = () => {
             {message && (
               <div className="mb-4 text-center text-blue-500">{message}</div>
             )}
-            <form
-              className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md"
-            >
+            <form className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md">
               <div className="flex flex-col items-center">
                 {preview ? (
                   <img
@@ -191,7 +155,7 @@ const Settings = () => {
               />
             </div>
           </div>
-          
+
           <div className="mb-6">
             <label
               htmlFor="publicApi"

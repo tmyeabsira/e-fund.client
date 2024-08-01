@@ -46,12 +46,12 @@ const FundraisingGoal = () => {
             {error && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>}
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Keep in mind that transaction <Link to='https://www.chapa.com' className="text-blue-500 dark:text-blue-400">fees</Link>, including credit and debit charges, are deducted from each donation.
+            Keep in mind that transaction <Link to='https://chapa.co/pricing' className="text-blue-500 dark:text-blue-400">fees</Link>, including credit and debit charges, are deducted from each donation.
           </p>
           <div className="mt-6 bg-blue-50 dark:bg-gray-800 p-4 rounded-md">
             <p className="text-sm text-gray-800 dark:text-gray-300">To receive money raised, please make sure the person withdrawing has:</p>
             <ul className="mt-2 text-sm text-gray-600 dark:text-gray-400 list-disc list-inside">
-              <li>A <Link to='https://www.chapa.com' className="text-blue-500 dark:text-blue-400">chapa</Link> account</li>
+              <li>A <Link to='https://dashboard.chapa.co/login' className="text-blue-500 dark:text-blue-400">chapa</Link> account</li>
               <li>A bank account and a valid bank name</li>
             </ul>
           </div>

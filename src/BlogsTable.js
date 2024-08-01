@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from './api';
 import React, { useState, useEffect } from 'react';
-import DeleteModal from './DeleteModal';
+import DeleteBlogModal from './DeleteBlogModal';
 
 const BlogsTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,7 +11,7 @@ const BlogsTable = () => {
   const itemsPerPage = 10;
   const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
+  const [blogIdToDelete, setBlogIdToDelete] = useState(null);
 
   const totalPages = Math.ceil(blogs.length / itemsPerPage);
 
@@ -33,7 +33,7 @@ const BlogsTable = () => {
       }
     };
 
-    fetchData(); // Call the function
+    fetchData();
   }, []);
 
   const getUsernameById = (userId) => {
@@ -41,9 +41,14 @@ const BlogsTable = () => {
     return user ? user.userName : 'Unknown';
   };
 
-  const handleDelete = (id) => {
-    axios.delete(`/api/Blog/DeleteBlog/${id}`);
-    // setIsDeleteModalOpen(false);
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/Blog/DeleteBlog/${blogIdToDelete}`);
+      setBlogs(blogs.filter(blog => blog.blogId !== blogIdToDelete));
+      setIsDeleteModalOpen(false);
+    } catch (error) {
+      console.error('Error deleting blog:', error);
+    }
   };
 
   const handleRowClick = (id) => {
@@ -54,13 +59,14 @@ const BlogsTable = () => {
     setFilterText(event.target.value);
   };
 
-  // const handleOpenDeleteModal = () => {
-  //   setIsDeleteModalOpen(true);
-  // };
+  const handleOpenDeleteModal = (id) => {
+    setBlogIdToDelete(id);
+    setIsDeleteModalOpen(true);
+  };
 
-  // const handleCloseDeleteModal = () => {
-  //   setIsDeleteModalOpen(false);
-  // };
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   const filteredBlogs = blogs.filter((blog) =>
     (blog.title || '').toLowerCase().includes(filterText.toLowerCase()) ||
@@ -77,8 +83,15 @@ const BlogsTable = () => {
     <div className="container mx-auto p-4">
       <div className=''>
         <h1 className='text-3xl font-semibold mt-16'>Blog Table</h1>
+        
+        
         <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700 lg:mb-6" />
+        <div className='flex justify-between items-center'>
         <p className='text-lg my-4'>Here you can find all Blogs. You can also filter by blog title, content, owner and more.</p>
+        <Link to="/blog/create">
+          <button className='bg-blue-700 text-white px-4 py-2 rounded-lg'>Create Blog</button>
+        </Link>
+        </div>
       </div>
       <div className="flex justify-between items-center mb-4">
         <input
@@ -100,14 +113,12 @@ const BlogsTable = () => {
         </thead>
         <tbody>
           {currentFilteredItems.map((blog, index) => (
-            <tr key={index}
-                className="cursor-pointer"
-                >
+            <tr key={index} className="cursor-pointer">
               <td onClick={() => handleRowClick(blog.blogId)} className="px-4 py-2 border-b border-r">{blog.title}</td>
               <td className="px-4 py-2 border-b border-r">{getUsernameById(blog.userId)}</td>
               <td className="px-4 py-2 border-b border-r">{blog.content.substring(0, 30) + '...'}</td>
               <td className="px-4 py-2 border-b border-r">
-                <button onClick={() => handleDelete(blog.blogId)} className="text-red-500 hover:text-red-700">Delete</button>
+                <button onClick={() => handleOpenDeleteModal(blog.blogId)} className="text-red-500 hover:text-red-700">Delete</button>
               </td>
             </tr>
           ))}
@@ -161,11 +172,11 @@ const BlogsTable = () => {
           </button>
         </div>
       </div>
-      {/* <DeleteModal
-          isOpen={isDeleteModalOpen}
-          onClose={handleCloseDeleteModal}
-          onConfirm={handleDelete}
-        /> */}
+      <DeleteBlogModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 };

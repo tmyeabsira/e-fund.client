@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./api";
 import LoadingSpinner from "./LoadingSpinner";
-import { formatDistanceToNow } from "date-fns";
 
 const BlogComment = ({ blogId }) => {
   const [comments, setComments] = useState([]);
@@ -16,7 +15,6 @@ const BlogComment = ({ blogId }) => {
           `/api/blogcomment/GetBlogComments/${blogId}`
         );
         setComments(response.data.$values);
-        console.log(comments)
       } catch (err) {
         setError(err.message);
       } finally {
@@ -26,6 +24,30 @@ const BlogComment = ({ blogId }) => {
 
     fetchComments();
   }, [blogId]);
+
+  const CalculateTimeDifferences = (givenTime) => {
+    const givenDate = new Date(givenTime);
+    const currentDate = new Date();
+
+    const timeDifference = currentDate - givenDate;
+
+    // Convert milliseconds to seconds, minutes, hours, and days
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+        return `${days}d ago`;
+    } else if (hours > 0) {
+        return `${hours}h ago`;
+    } else if (minutes > 0) {
+        return `${minutes}m ago`;
+    } else {
+        return `${seconds}s ago`;
+    }
+}
+
 
   if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;
@@ -44,18 +66,16 @@ const BlogComment = ({ blogId }) => {
             >
               <div className="flex items-center mb-2">
                 <div className="flex items-center">
-                <img
-                  className="w-10 h-10 pr-2 rounded-full object-cover"
-                  src={`${baseURL}${comment.user.profilePic}`}
-                  alt={comment.user.userName}
-                />
+                  <img
+                    className="w-10 h-10 pr-2 rounded-full object-cover"
+                    src={`${baseURL}${comment.user.profilePic}`}
+                    alt={comment.user.userName}
+                  />
                   <div className="font-bold">{comment.user.userName}</div>
                 </div>
                 <div className="text-gray-500 ml-2">
-                  {formatDistanceToNow(new Date(comment.createdAt), {
-                    addSuffix: true,
-                  })}
-                </div>{" "}
+                  {CalculateTimeDifferences(comment.createdAt)}
+                </div>
               </div>
               <div>{comment.content}</div>
             </li>

@@ -32,12 +32,12 @@ const FundraiserNotifications = ({ username, onNewMessage }) => {
 
   return (
         <div>
-            
-            {/* <ul>
+            <h1>Fundrauser</h1>
+            <ul>
                 {messages.map((message, index) => (
                     <li key={index}>{message}</li>
                 ))}
-            </ul>*/}
+            </ul>
             </div> 
     );
 };

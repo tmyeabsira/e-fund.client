@@ -62,7 +62,7 @@ const RecentDonations = () => {
               <td className="py-2 px-4 border-b">${donation.amount}</td>
               <td className="py-2 px-4 border-b">{donation.fundraiserName}</td>
               <td className="py-2 px-4 border-b">{donation.fundraiserCategory.name}</td>
-              <td className="py-2 px-4 border-b">{new Date(donation.createdAt).toLocaleString()}
+              <td className="py-2 px-4 border-b">{new Date(donation.createdAt).toLocaleDateString()}
               </td>
             </tr>
           ))}

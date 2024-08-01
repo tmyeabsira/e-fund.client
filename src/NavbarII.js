@@ -4,6 +4,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import logo from './images/logo1.png';
 import { hasRole } from './auth';
+import { searchEngine } from '@fortawesome/react-fontawesome'
 
 const NavbarII = () => {
   const navigate = useNavigate();
@@ -122,6 +123,7 @@ const NavbarII = () => {
             
             <li>
               <Link to="/fundraisers/search" className="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+              <i className="pr-2 fa-solid fa-magnifying-glass"></i>
                 Search
               </Link>
             </li>

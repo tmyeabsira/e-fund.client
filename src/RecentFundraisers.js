@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from './api';
 
 const RecentFundraisers = () => {
   const [fundraisers, setfundraisers] = useState([]);
@@ -9,9 +9,9 @@ const RecentFundraisers = () => {
   useEffect(() => {
     const fetchRecentfundraisers = async () => {
       try {
-        const response = await axios.get('https://localhost:7062/api/fundraiser/GetRecentfundraisers');
+        const response = await axios.get('/api/Fundraiser/GetAllFundraisers');
         setfundraisers(response.data.$values);
-        console.log("ssss",response.data.$values)
+        console.log("fundraiser data",response.data.$values)
       } catch (error) {
         console.error('Error fetching recent fundraisers', error);
       }
@@ -29,10 +29,10 @@ const RecentFundraisers = () => {
   };
 
   const filteredfundraisers = fundraisers.filter((fundraiser) =>
-    (fundraiser.firstName || '').toLowerCase().includes(filterText.toLowerCase()) ||
-    (fundraiser.lastName || '').toLowerCase().includes(filterText.toLowerCase()) ||
-    (fundraiser.fundraiserName || '').toLowerCase().includes(filterText.toLowerCase()) ||
-    (fundraiser.fundraiserCategory.name || '').toLowerCase().includes(filterText.toLowerCase())
+    (fundraiser.title || '').toLowerCase().includes(filterText.toLowerCase()) ||
+    (fundraiser.goalAmount.toString() || '').toLowerCase().includes(filterText.toLowerCase()) ||
+    // (fundraiser.fundraiser.fundraiserCategory || '').toLowerCase().includes(filterText.toLowerCase()) ||
+    (fundraiser.description || '').toLowerCase().includes(filterText.toLowerCase())
   );
 
   return (
@@ -48,9 +48,9 @@ const RecentFundraisers = () => {
       <table className="min-w-full bg-white border border-gray-300">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b">Donor</th>
-            <th className="py-2 px-4 border-b">Amount</th>
-            <th className="py-2 px-4 border-b">Fundraiser</th>
+            <th className="py-2 px-4 border-b">Title</th>
+            <th className="py-2 px-4 border-b">Goal</th>
+            <th className="py-2 px-4 border-b">Description</th>
             <th className="py-2 px-4 border-b">Category</th>
             <th className="py-2 px-4 border-b">Date</th>
           </tr>
@@ -58,11 +58,11 @@ const RecentFundraisers = () => {
         <tbody>
           {filteredfundraisers.slice(0, visiblefundraisers).map((fundraiser) => (
             <tr key={fundraiser.fundraiserId} className="hover:bg-gray-100">
-              <td className="py-2 px-4 border-b">{fundraiser.firstName} {fundraiser.lastName}</td>
-              <td className="py-2 px-4 border-b">${fundraiser.amount}</td>
-              <td className="py-2 px-4 border-b">{fundraiser.fundraiserName}</td>
-              <td className="py-2 px-4 border-b">{fundraiser.fundraiserCategory.name}</td>
-              <td className="py-2 px-4 border-b">{new Date(fundraiser.createdAt).toLocaleString()}</td>
+              <td className="py-2 px-4 border-b">{fundraiser.title.slice(0,20)+'...'}</td>
+              <td className="py-2 px-4 border-b">${fundraiser.goalAmount}</td>
+              <td className="py-2 px-4 border-b">{fundraiser.description.slice(0,15)+"..."}</td>
+              <td className="py-2 px-4 border-b">{fundraiser.firstName}</td>
+              <td className="py-2 px-4 border-b">{new Date(fundraiser.createdAt).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>

@@ -44,7 +44,6 @@ const UserDashboard = () => {
               const moneyRaisedResponse = await axios.get(`api/Donation/GetTotalDonationsByUser/${userId}`);
 
               setFundraisers(fundraisersResponse.data.$values);
-              console.log("funderaiser",fundraisers)
               setTotalDonations(donationsResponse.data);
               setTotalMoneyRaised(moneyRaisedResponse.data);
           } catch (error) {
@@ -73,7 +72,7 @@ const UserDashboard = () => {
             
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                   <div className="p-6 rounded-lg shadow-md">
-                      <h2 className="text-2xl font-semibold">Total Donations Made</h2>
+                      <h2 className="text-2xl font-semibold">Total Donors</h2>
                       <p className="mt-4 text-3xl">{totalDonations}</p>
                   </div>
                   <div className="p-6 rounded-lg shadow-md">
@@ -95,7 +94,7 @@ const UserDashboard = () => {
                   ))}
               </div>
           </div>
-          {/* <FundraiserNotifications username={username} onNewMessage={handleNewMessage} /> */}
+          <FundraiserNotifications username={username} onNewMessage={handleNewMessage} />
       </div>
   );
 };

@@ -1,10 +1,11 @@
 import { jwtDecode } from "jwt-decode";
 
 const getUserRoles = () => {
-    const token = localStorage.getItem('user'); // or wherever you store the token
+    const token = localStorage.getItem('user');
     if (!token) return [];
 
     const decodedToken = jwtDecode(token);
+    console.log("Logged in user's username", decodedToken.sub); 
     return decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || [];
 };
 
